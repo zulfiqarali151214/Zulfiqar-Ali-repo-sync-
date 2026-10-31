@@ -1,0 +1,6 @@
+{
+  "name": "Zulfiqar Repo Sync",
+  "description": "Mobile web client to push ZIPs, folders, and files directly to GitHub repositories without a server.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
