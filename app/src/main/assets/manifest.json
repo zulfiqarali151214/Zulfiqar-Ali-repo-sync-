@@ -1,0 +1,39 @@
+{
+  "name": "Zulfiqar Repo Sync",
+  "short_name": "Repo Sync",
+  "description": "Direct client-side GitHub repository synchronization app for mobile devices.",
+  "start_url": "/Zulfiqar-Ali-repo-sync-/",
+  "scope": "/Zulfiqar-Ali-repo-sync-/",
+  "id": "/Zulfiqar-Ali-repo-sync-/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8FAFC",
+  "theme_color": "#1D4ED8",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

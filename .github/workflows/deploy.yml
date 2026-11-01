@@ -49,6 +49,13 @@ jobs:
           if [ -f "favicon.png" ]; then
             cp favicon.png _site/
           fi
+          if [ -f "manifest.json" ]; then
+            cp manifest.json _site/
+          fi
+          if [ -f "sw.js" ]; then
+            cp sw.js _site/
+          fi
+          cp -f icon-*.png _site/ 2>/dev/null || true
           # Guarantee 404.html for SPA route fallback
           if [ -f "404.html" ]; then
             cp 404.html _site/

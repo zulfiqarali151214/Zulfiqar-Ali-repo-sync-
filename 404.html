@@ -1,0 +1,2292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1D4ED8">
+  <title>Zulfiqar Repo Sync</title>
+  <!-- GitHub Pages repository base path -->
+  <base href="/Zulfiqar-Ali-repo-sync-/">
+  <script>
+    // Ensure relative assets resolve properly when opened via file:// or custom hosts
+    if (window.location.protocol === 'file:' || !window.location.pathname.startsWith('/Zulfiqar-Ali-repo-sync-')) {
+      const baseEl = document.querySelector('base');
+      if (baseEl) baseEl.setAttribute('href', './');
+    }
+  </script>
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="description" content="Direct client-side GitHub repository synchronization app for mobile devices.">
+  <style>
+    :root {
+      --primary: #1D4ED8;
+      --primary-hover: #1E40AF;
+      --primary-light: #EFF6FF;
+      --primary-border: #BFDBFE;
+      --success: #15803D;
+      --success-bg: #F0FDF4;
+      --success-border: #BBF7D0;
+      --danger: #B91C1C;
+      --danger-bg: #FEF2F2;
+      --danger-border: #FECACA;
+      --warning: #B45309;
+      --warning-bg: #FFFBEB;
+      --warning-border: #FDE68A;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --bg-page: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --border-color: #E2E8F0;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 16px 12px 32px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 8px 4px 4px;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      border: 1px solid var(--primary-border);
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .header h1 svg {
+      width: 28px;
+      height: 28px;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .header-sub {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* Main Form Card */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .field-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      font-size: 15px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #FFFFFF;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+    }
+
+    .input-with-icon {
+      padding-right: 48px !important;
+    }
+
+    .icon-btn {
+      position: absolute;
+      right: 4px;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+    }
+
+    .icon-btn:hover {
+      color: var(--text-main);
+    }
+
+    .row-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 400px) {
+      .row-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Token details link & accordion */
+    .token-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .action-link {
+      color: var(--primary);
+      background: none;
+      border: none;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 2px 4px;
+    }
+
+    .token-guide-toggle {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 2px 0;
+    }
+
+    .token-guide-toggle:hover {
+      color: var(--primary);
+    }
+
+    .token-guide-box {
+      display: none;
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #1E3A8A;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    .token-guide-box.open {
+      display: block;
+    }
+
+    .token-guide-box ol {
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    .token-guide-box li {
+      margin-bottom: 4px;
+    }
+
+    /* Segmented Control */
+    .segmented-control {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      background: #F1F5F9;
+      padding: 4px;
+      border-radius: var(--radius-md);
+      gap: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .segment-btn {
+      min-height: 44px;
+      padding: 8px 6px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .segment-btn.active {
+      background: #FFFFFF;
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* File upload areas */
+    .upload-pane {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .upload-pane.active {
+      display: flex;
+    }
+
+    .file-dropzone {
+      border: 2px dashed var(--primary-border);
+      background: var(--primary-light);
+      border-radius: var(--radius-md);
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 110px;
+      transition: all 0.2s ease;
+    }
+
+    .file-dropzone:hover,
+    .file-dropzone.dragover {
+      border-color: var(--primary);
+      background: #DBEAFE;
+    }
+
+    .dropzone-icon {
+      width: 36px;
+      height: 36px;
+      color: var(--primary);
+    }
+
+    .dropzone-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .dropzone-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .two-buttons-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      min-height: 48px;
+      background: #F1F5F9;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 10px 14px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #E2E8F0;
+      border-color: #CBD5E1;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    /* File selection summary & list */
+    .files-summary-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .files-summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .badge-count {
+      background: var(--primary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .btn-text-sm {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 2px 4px;
+    }
+
+    .files-scroll-list {
+      max-height: 140px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      background: #FFFFFF;
+      border-radius: var(--radius-sm);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11.5px;
+      padding: 4px;
+    }
+
+    .file-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 6px;
+      border-bottom: 1px solid #F1F5F9;
+      gap: 8px;
+    }
+
+    .file-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .file-path {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-main);
+    }
+
+    .file-size {
+      color: var(--text-muted);
+      flex-shrink: 0;
+      font-size: 10.5px;
+    }
+
+    /* Alert / skipped note */
+    .note-box {
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      line-height: 1.4;
+    }
+
+    .note-warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning);
+    }
+
+    .note-danger {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      color: var(--danger);
+    }
+
+    .note-info {
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      color: var(--primary);
+    }
+
+    /* Checkbox rows */
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 13.5px;
+      line-height: 1.35;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border-color);
+      accent-color: var(--primary);
+      cursor: pointer;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .checkbox-label {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .warning-text {
+      color: var(--danger);
+      font-weight: 600;
+      font-size: 12.5px;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Push Button */
+    .btn-push {
+      width: 100%;
+      min-height: 52px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(29, 78, 216, 0.3);
+      padding: 12px 20px;
+    }
+
+    .btn-push:hover:not(:disabled) {
+      background: var(--primary-hover);
+      box-shadow: 0 6px 14px rgba(29, 78, 216, 0.4);
+    }
+
+    .btn-push:disabled {
+      background: #CBD5E1;
+      color: #94A3B8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Progress & Step Section */
+    .progress-section {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .progress-section.active {
+      display: flex;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      border-radius: 9999px;
+      transition: width 0.2s ease;
+    }
+
+    .step-label {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Result Cards */
+    .result-card {
+      display: none;
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-md);
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card.success {
+      display: flex;
+      background: var(--success-bg);
+      border: 1.5px solid var(--success-border);
+      color: #14532D;
+    }
+
+    .result-card.error {
+      display: flex;
+      background: var(--danger-bg);
+      border: 1.5px solid var(--danger-border);
+      color: #7F1D1D;
+    }
+
+    .result-title {
+      font-size: 17px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-desc {
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    .result-stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius-md);
+      font-weight: 600;
+    }
+
+    .result-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn-result {
+      min-height: 44px;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-result-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+    }
+
+    .btn-result-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-result-secondary {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: 1.5px solid var(--border-color);
+    }
+
+    .btn-result-secondary:hover {
+      background: #F1F5F9;
+    }
+
+    .result-hint {
+      font-size: 12px;
+      color: #166534;
+      background: #DCFCE7;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      line-height: 1.35;
+    }
+
+    /* Technical details accordion */
+    .tech-details-container {
+      margin-top: 4px;
+    }
+
+    .tech-details-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 0;
+      text-decoration: underline;
+    }
+
+    .tech-details-box {
+      display: none;
+      background: #FFFFFF;
+      border: 1px solid var(--danger-border);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      margin-top: 6px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 11px;
+      max-height: 140px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #334155;
+    }
+
+    .tech-details-box.open {
+      display: block;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .toast {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: toastIn 0.25s ease forwards;
+    }
+
+    .toast.success {
+      background: #065F46;
+      border: 1px solid #10B981;
+    }
+
+    .toast.error {
+      background: #991B1B;
+      border: 1px solid #EF4444;
+    }
+
+    .toast.warning {
+      background: #92400E;
+      border: 1px solid #F59E0B;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Spinner */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #FFFFFF;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .spinner-dark {
+      border: 2.5px solid rgba(29, 78, 216, 0.2);
+      border-top-color: var(--primary);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+  <script src="jszip.min.js"></script>
+  <script>
+    if (typeof JSZip === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"><\/script>');
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Direct Client Sync • 100% In-Browser
+      </div>
+      <h1>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Repo Sync
+      </h1>
+      <p class="header-sub">
+        Your GitHub token stays in your browser. It is never sent to any server except GitHub.
+      </p>
+    </header>
+
+    <!-- Main Card -->
+    <div class="card">
+      <!-- 1. GitHub Token -->
+      <div class="form-group">
+        <div class="label-row">
+          <label for="tokenInput">1. GitHub Personal Access Token</label>
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="tokenInput"
+            class="input-with-icon"
+            placeholder="github_pat_... or ghp_..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" id="toggleTokenBtn" class="icon-btn" aria-label="Toggle token visibility">
+            <svg id="eyeIconOpen" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="eyeIconClosed" style="display:none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <p class="field-hint">
+          Use a fine-grained token limited to your repo with "Contents: Read and write" permission.
+        </p>
+
+        <div class="token-actions">
+          <label class="checkbox-row" style="font-size: 12.5px;">
+            <input type="checkbox" id="rememberTokenCheckbox">
+            <span class="checkbox-label">Remember token on this device</span>
+          </label>
+          <button type="button" id="clearTokenBtn" class="action-link" style="color: var(--danger);">Clear saved token</button>
+        </div>
+
+        <button type="button" id="tokenGuideToggle" class="token-guide-toggle">
+          <span>How to create a fine-grained token</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="tokenGuideBox" class="token-guide-box">
+          <strong>Steps to create a Fine-Grained Token:</strong>
+          <ol>
+            <li>Go to GitHub <strong>Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>.</li>
+            <li>Click <strong>Generate new token</strong>.</li>
+            <li>Under <strong>Repository access</strong>, select <strong>Only select repositories</strong> and choose your repository.</li>
+            <li>Under <strong>Repository permissions</strong>, expand <strong>Contents</strong> and choose <strong>Read and write</strong>.</li>
+            <li>Click <strong>Generate token</strong> and paste it into the field above.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 2 & 3. Repo Owner and Name -->
+      <div class="row-split">
+        <div class="form-group">
+          <label for="ownerInput">2. Repo Owner</label>
+          <input
+            type="text"
+            id="ownerInput"
+            placeholder="e.g. zulfiqar"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <span class="field-hint">Username or org</span>
+        </div>
+        <div class="form-group">
+          <label for="repoInput">3. Repo Name</label>
+          <input
+            type="text"
+            id="repoInput"
+            placeholder="e.g. my-site"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <span class="field-hint">Repository name</span>
+        </div>
+      </div>
+
+      <!-- 4. Branch -->
+      <div class="form-group">
+        <label for="branchInput">4. Branch</label>
+        <input
+          type="text"
+          id="branchInput"
+          value="main"
+          placeholder="main"
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <span class="field-hint">Default is main. If the branch doesn't exist, it will be created.</span>
+      </div>
+
+      <!-- 5. Mode Switcher -->
+      <div class="form-group">
+        <label>5. Mode</label>
+        <div class="segmented-control">
+          <button type="button" class="segment-btn active" data-mode="zip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Zip Upload
+          </button>
+          <button type="button" class="segment-btn" data-mode="folder">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            Files / Folder
+          </button>
+          <button type="button" class="segment-btn" data-mode="single">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Single File
+          </button>
+        </div>
+
+        <!-- Mode 1: Zip Upload -->
+        <div id="paneZip" class="upload-pane active">
+          <div class="file-dropzone" id="zipDropzone">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <div class="dropzone-title">Tap to choose a .zip file</div>
+            <div class="dropzone-sub">or drag and drop here</div>
+          </div>
+          <input type="file" id="zipInput" class="hidden-file-input" accept=".zip,application/zip,application/x-zip-compressed">
+        </div>
+
+        <!-- Mode 2: Files / Folder -->
+        <div id="paneFolder" class="upload-pane">
+          <div class="two-buttons-row">
+            <button type="button" id="btnChooseFiles" class="btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+              Choose files
+            </button>
+            <button type="button" id="btnChooseFolder" class="btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              Choose folder
+            </button>
+          </div>
+          <input type="file" id="filesInput" class="hidden-file-input" multiple>
+          <input type="file" id="folderInput" class="hidden-file-input" webkitdirectory directory multiple>
+        </div>
+
+        <!-- Mode 3: Single File -->
+        <div id="paneSingle" class="upload-pane">
+          <button type="button" id="btnChooseSingle" class="btn-secondary" style="width: 100%;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Choose single file
+          </button>
+          <input type="file" id="singleFileInput" class="hidden-file-input">
+          <div class="form-group" style="margin-top: 6px;">
+            <label for="singleFilePathInput" style="font-size: 13px;">Path in repo</label>
+            <input
+              type="text"
+              id="singleFilePathInput"
+              placeholder="e.g. index.html or src/app.js"
+              autocomplete="off"
+            >
+            <span class="field-hint">Defaults to the file name.</span>
+          </div>
+        </div>
+
+        <!-- Selected Files Summary -->
+        <div id="filesSummaryCard" class="files-summary-card" style="display: none;">
+          <div class="files-summary-header">
+            <div>
+              <span id="filesCountBadge" class="badge-count">0 files</span>
+              <span id="filesTotalSizeText" style="color: var(--text-muted); margin-left: 6px; font-size: 12px;">0 KB</span>
+            </div>
+            <button type="button" id="clearFilesBtn" class="btn-text-sm">Clear</button>
+          </div>
+
+          <div id="filesListContainer" class="files-scroll-list"></div>
+
+          <!-- Skipped notice -->
+          <div id="skippedNotice" class="note-box note-warning" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="skippedNoticeText"></span>
+          </div>
+
+          <!-- Over 100MB notice -->
+          <div id="largeNotice" class="note-box note-danger" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="largeNoticeText"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Remove top folder checkbox -->
+      <label class="checkbox-row" id="stripFolderRow">
+        <input type="checkbox" id="stripTopFolderCheckbox" checked>
+        <div>
+          <span class="checkbox-label">Remove the top folder name if everything is inside one folder, so files go straight to the repo root</span>
+          <div id="stripFolderHint" style="font-size: 11.5px; color: var(--primary); display: none; margin-top: 2px;"></div>
+        </div>
+      </label>
+
+      <!-- 7. Mirror repo checkbox -->
+      <div class="form-group">
+        <label class="checkbox-row">
+          <input type="checkbox" id="mirrorRepoCheckbox">
+          <div>
+            <span class="checkbox-label">Mirror the repo to this upload: delete old files that are not in this upload. If any file fails to upload, no deletion happens.</span>
+          </div>
+        </label>
+        <div id="mirrorWarning" class="warning-text" style="display: none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          This will delete files from the repo.
+        </div>
+      </div>
+
+      <!-- 8. Target folder in repo -->
+      <div class="form-group">
+        <label for="targetFolderInput">8. Target folder in repo (optional)</label>
+        <input
+          type="text"
+          id="targetFolderInput"
+          placeholder="leave empty for repo root, or e.g. public or docs"
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <span class="field-hint">Empty = repo root. If specified, all uploaded files are placed inside this folder.</span>
+      </div>
+
+      <!-- 9. Commit Message -->
+      <div class="form-group">
+        <label for="commitMessageInput">9. Commit Message</label>
+        <input
+          type="text"
+          id="commitMessageInput"
+          placeholder="Update via Repo Sync"
+          autocomplete="off"
+        >
+        <span class="field-hint">Defaults to "Update via Repo Sync" if left empty.</span>
+      </div>
+
+      <!-- Progress bar & step info -->
+      <div id="progressSection" class="progress-section">
+        <div class="progress-header">
+          <span id="progressStepTitle">Syncing with GitHub…</span>
+          <span id="progressPercentText">0%</span>
+        </div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="step-label">
+          <div class="spinner spinner-dark" style="width: 14px; height: 14px; border-width: 2px;"></div>
+          <span id="progressStepDetails">Preparing files…</span>
+        </div>
+      </div>
+
+      <!-- 10. Big Primary Push Button -->
+      <button type="button" id="pushBtn" class="btn-push" disabled>
+        <svg id="pushIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div id="pushSpinner" class="spinner" style="display: none;"></div>
+        <span id="pushBtnText">Push to GitHub</span>
+      </button>
+
+      <!-- SUCCESS Result Card -->
+      <div id="successCard" class="result-card success">
+        <div class="result-title">
+          <span>✅ Pushed successfully</span>
+        </div>
+        <div class="result-stats-row">
+          <div><strong id="statPushedCount">0</strong> files pushed</div>
+          <div id="statDeletedWrap" style="display: none;"><strong id="statDeletedCount">0</strong> deleted (mirror)</div>
+          <div>Commit: <code id="statCommitSha" style="font-family: monospace; font-size: 13px;">-------</code></div>
+        </div>
+        <div class="result-buttons">
+          <a id="btnViewCommit" href="#" target="_blank" rel="noopener noreferrer" class="btn-result btn-result-primary">
+            View commit
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <a id="btnOpenRepo" href="#" target="_blank" rel="noopener noreferrer" class="btn-result btn-result-secondary">
+            Open repo
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+        <div class="result-hint">
+          💡 If the repo uses GitHub Pages / Actions, the site updates in about 1-2 minutes.
+        </div>
+      </div>
+
+      <!-- ERROR Result Card -->
+      <div id="errorCard" class="result-card error">
+        <div class="result-title">
+          <span>❌ Push failed</span>
+        </div>
+        <div class="result-desc">
+          <div id="errorStepText" style="font-weight: 700; margin-bottom: 4px; font-size: 12.5px; opacity: 0.85;">Step: Preparing</div>
+          <div id="errorReasonText" style="font-size: 14px; font-weight: 500;">An error occurred.</div>
+        </div>
+
+        <div class="tech-details-container">
+          <button type="button" id="techDetailsToggle" class="tech-details-btn">
+            Technical details ▾
+          </button>
+          <div id="techDetailsBox" class="tech-details-box"></div>
+        </div>
+
+        <div class="result-buttons">
+          <button type="button" id="btnTryAgain" class="btn-result btn-result-primary" style="background: var(--danger);">
+            Try again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script>
+    // State
+    const state = {
+      token: '',
+      rememberToken: false,
+      owner: '',
+      repo: '',
+      branch: 'main',
+      mode: 'zip', // 'zip' | 'folder' | 'single'
+      files: [], // Array of { path: string, data: ArrayBuffer | Uint8Array, size: number }
+      skippedFiles: [], // Array of { path: string, reason: string }
+      largeFiles: [], // Array of { path: string, size: number }
+      stripTopFolder: true,
+      mirror: false,
+      targetFolder: '',
+      commitMessage: '',
+      isPushing: false
+    };
+
+    // DOM Elements
+    const tokenInput = document.getElementById('tokenInput');
+    const toggleTokenBtn = document.getElementById('toggleTokenBtn');
+    const eyeIconOpen = document.getElementById('eyeIconOpen');
+    const eyeIconClosed = document.getElementById('eyeIconClosed');
+    const rememberTokenCheckbox = document.getElementById('rememberTokenCheckbox');
+    const clearTokenBtn = document.getElementById('clearTokenBtn');
+    const tokenGuideToggle = document.getElementById('tokenGuideToggle');
+    const tokenGuideBox = document.getElementById('tokenGuideBox');
+
+    const ownerInput = document.getElementById('ownerInput');
+    const repoInput = document.getElementById('repoInput');
+    const branchInput = document.getElementById('branchInput');
+
+    const segmentBtns = document.querySelectorAll('.segment-btn');
+    const paneZip = document.getElementById('paneZip');
+    const paneFolder = document.getElementById('paneFolder');
+    const paneSingle = document.getElementById('paneSingle');
+
+    const zipDropzone = document.getElementById('zipDropzone');
+    const zipInput = document.getElementById('zipInput');
+
+    const btnChooseFiles = document.getElementById('btnChooseFiles');
+    const btnChooseFolder = document.getElementById('btnChooseFolder');
+    const filesInput = document.getElementById('filesInput');
+    const folderInput = document.getElementById('folderInput');
+
+    const btnChooseSingle = document.getElementById('btnChooseSingle');
+    const singleFileInput = document.getElementById('singleFileInput');
+    const singleFilePathInput = document.getElementById('singleFilePathInput');
+
+    const filesSummaryCard = document.getElementById('filesSummaryCard');
+    const filesCountBadge = document.getElementById('filesCountBadge');
+    const filesTotalSizeText = document.getElementById('filesTotalSizeText');
+    const filesListContainer = document.getElementById('filesListContainer');
+    const clearFilesBtn = document.getElementById('clearFilesBtn');
+    const skippedNotice = document.getElementById('skippedNotice');
+    const skippedNoticeText = document.getElementById('skippedNoticeText');
+    const largeNotice = document.getElementById('largeNotice');
+    const largeNoticeText = document.getElementById('largeNoticeText');
+
+    const stripTopFolderCheckbox = document.getElementById('stripTopFolderCheckbox');
+    const stripFolderHint = document.getElementById('stripFolderHint');
+    const stripFolderRow = document.getElementById('stripFolderRow');
+
+    const mirrorRepoCheckbox = document.getElementById('mirrorRepoCheckbox');
+    const mirrorWarning = document.getElementById('mirrorWarning');
+
+    const targetFolderInput = document.getElementById('targetFolderInput');
+    const commitMessageInput = document.getElementById('commitMessageInput');
+
+    const pushBtn = document.getElementById('pushBtn');
+    const pushBtnText = document.getElementById('pushBtnText');
+    const pushIcon = document.getElementById('pushIcon');
+    const pushSpinner = document.getElementById('pushSpinner');
+
+    const progressSection = document.getElementById('progressSection');
+    const progressStepTitle = document.getElementById('progressStepTitle');
+    const progressPercentText = document.getElementById('progressPercentText');
+    const progressFill = document.getElementById('progressFill');
+    const progressStepDetails = document.getElementById('progressStepDetails');
+
+    const successCard = document.getElementById('successCard');
+    const statPushedCount = document.getElementById('statPushedCount');
+    const statDeletedWrap = document.getElementById('statDeletedWrap');
+    const statDeletedCount = document.getElementById('statDeletedCount');
+    const statCommitSha = document.getElementById('statCommitSha');
+    const btnViewCommit = document.getElementById('btnViewCommit');
+    const btnOpenRepo = document.getElementById('btnOpenRepo');
+
+    const errorCard = document.getElementById('errorCard');
+    const errorStepText = document.getElementById('errorStepText');
+    const errorReasonText = document.getElementById('errorReasonText');
+    const techDetailsToggle = document.getElementById('techDetailsToggle');
+    const techDetailsBox = document.getElementById('techDetailsBox');
+    const btnTryAgain = document.getElementById('btnTryAgain');
+
+    // Storage Keys
+    const STORAGE_KEY_TOKEN = 'zulfiqar_repo_sync_token';
+    const STORAGE_KEY_OWNER = 'zulfiqar_repo_sync_owner';
+    const STORAGE_KEY_REPO = 'zulfiqar_repo_sync_repo';
+    const STORAGE_KEY_BRANCH = 'zulfiqar_repo_sync_branch';
+
+    // Init values from localStorage
+    function initStorage() {
+      const savedToken = localStorage.getItem(STORAGE_KEY_TOKEN);
+      if (savedToken) {
+        state.token = savedToken;
+        state.rememberToken = true;
+        tokenInput.value = savedToken;
+        rememberTokenCheckbox.checked = true;
+      }
+
+      const savedOwner = localStorage.getItem(STORAGE_KEY_OWNER);
+      if (savedOwner) {
+        state.owner = savedOwner;
+        ownerInput.value = savedOwner;
+      }
+
+      const savedRepo = localStorage.getItem(STORAGE_KEY_REPO);
+      if (savedRepo) {
+        state.repo = savedRepo;
+        repoInput.value = savedRepo;
+      }
+
+      const savedBranch = localStorage.getItem(STORAGE_KEY_BRANCH);
+      if (savedBranch) {
+        state.branch = savedBranch;
+        branchInput.value = savedBranch;
+      } else {
+        state.branch = 'main';
+        branchInput.value = 'main';
+      }
+
+      updateUI();
+    }
+
+    // Toast helper
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Format bytes
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return (bytes / Math.pow(k, i)).toFixed(1) + ' ' + sizes[i];
+    }
+
+    // Normalize file paths
+    function normalizePath(rawPath) {
+      let p = rawPath.replace(/\\/g, '/');
+      p = p.replace(/^(\.\/|\/)+/, '');
+      const parts = p.split('/');
+      const stack = [];
+      for (const part of parts) {
+        if (!part || part === '.') continue;
+        if (part === '..') {
+          if (stack.length > 0) stack.pop();
+        } else {
+          stack.push(part);
+        }
+      }
+      return stack.join('/');
+    }
+
+    // Skip filter
+    function checkFileSkip(path, size) {
+      const normalized = path.replace(/\\/g, '/');
+      const parts = normalized.split('/');
+      const filename = parts[parts.length - 1];
+
+      if (parts.some(p => p === '.git' || p === 'node_modules' || p === '__MACOSX')) {
+        return { skip: true, reason: 'Git/dependency folder' };
+      }
+      if (filename === '.DS_Store' || filename === 'Thumbs.db') {
+        return { skip: true, reason: 'System metadata file' };
+      }
+      if (filename === '.env' || filename === '.env.local') {
+        return { skip: true, reason: 'Secret environment file' };
+      }
+      if (size > 100 * 1024 * 1024) {
+        return { skip: true, reason: 'Exceeds 100MB limit', isLarge: true };
+      }
+      return { skip: false };
+    }
+
+    // Token masking
+    function maskToken(text, token) {
+      if (!text) return '';
+      if (!token) return String(text);
+      return String(text).split(token).join('ghp_••••••••');
+    }
+
+    // Chunked ArrayBuffer to Base64 (avoids call stack overflow on large files)
+    function arrayBufferToBase64(buffer) {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      const chunkSize = 32768;
+      for (let i = 0; i < len; i += chunkSize) {
+        const end = Math.min(i + chunkSize, len);
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, end));
+      }
+      return btoa(binary);
+    }
+
+    // Check common top folder in current files list
+    function detectCommonTopFolder(fileList) {
+      if (!fileList || fileList.length === 0) return null;
+      const firstSegments = fileList.map(f => {
+        const parts = f.path.split('/');
+        return parts.length > 1 ? parts[0] : null;
+      });
+      const first = firstSegments[0];
+      if (!first) return null;
+      const allShare = firstSegments.every(seg => seg === first);
+      return allShare ? first : null;
+    }
+
+    // Process file list & resolve duplicates (last wins)
+    function resolveFiles(rawList, isZipOrFolder = true) {
+      const resolvedMap = new Map();
+      const skipped = [];
+      const large = [];
+
+      for (const item of rawList) {
+        const norm = normalizePath(item.path);
+        if (!norm) continue;
+
+        const check = checkFileSkip(norm, item.size);
+        if (check.skip) {
+          if (check.isLarge) {
+            large.push({ path: norm, size: item.size });
+          } else {
+            skipped.push({ path: norm, reason: check.reason });
+          }
+          continue;
+        }
+
+        resolvedMap.set(norm, {
+          path: norm,
+          data: item.data,
+          size: item.size
+        });
+      }
+
+      state.files = Array.from(resolvedMap.values());
+      state.skippedFiles = skipped;
+      state.largeFiles = large;
+      renderFilesSummary();
+      updateUI();
+    }
+
+    // Render files list in summary card
+    function renderFilesSummary() {
+      if (state.files.length === 0 && state.skippedFiles.length === 0 && state.largeFiles.length === 0) {
+        filesSummaryCard.style.display = 'none';
+        stripFolderHint.style.display = 'none';
+        return;
+      }
+
+      filesSummaryCard.style.display = 'flex';
+      const totalBytes = state.files.reduce((acc, f) => acc + f.size, 0);
+      filesCountBadge.textContent = `${state.files.length} file${state.files.length === 1 ? '' : 's'}`;
+      filesTotalSizeText.textContent = `• Total ${formatBytes(totalBytes)}`;
+
+      // Render top folder hint
+      const commonTop = detectCommonTopFolder(state.files);
+      if (commonTop && state.mode !== 'single') {
+        stripFolderHint.textContent = `Detected root folder '${commonTop}/' will be stripped.`;
+        stripFolderHint.style.display = 'block';
+      } else {
+        stripFolderHint.style.display = 'none';
+      }
+
+      // Render skipped notice
+      if (state.skippedFiles.length > 0) {
+        skippedNotice.style.display = 'flex';
+        skippedNoticeText.textContent = `${state.skippedFiles.length} file(s) skipped (.git, .env, .DS_Store, etc.)`;
+      } else {
+        skippedNotice.style.display = 'none';
+      }
+
+      // Render large files notice
+      if (state.largeFiles.length > 0) {
+        largeNotice.style.display = 'flex';
+        largeNoticeText.textContent = `${state.largeFiles.length} file(s) skipped because they exceed the 100MB GitHub limit.`;
+      } else {
+        largeNotice.style.display = 'none';
+      }
+
+      // Render list items (up to 150 items for speed)
+      filesListContainer.innerHTML = '';
+      const displayCount = Math.min(state.files.length, 120);
+      for (let i = 0; i < displayCount; i++) {
+        const file = state.files[i];
+        const row = document.createElement('div');
+        row.className = 'file-item-row';
+        row.innerHTML = `
+          <span class="file-path" title="${file.path}">${file.path}</span>
+          <span class="file-size">${formatBytes(file.size)}</span>
+        `;
+        filesListContainer.appendChild(row);
+      }
+      if (state.files.length > displayCount) {
+        const moreRow = document.createElement('div');
+        moreRow.style.padding = '4px 6px';
+        moreRow.style.color = 'var(--text-muted)';
+        moreRow.style.textAlign = 'center';
+        moreRow.textContent = `... and ${state.files.length - displayCount} more files`;
+        filesListContainer.appendChild(moreRow);
+      }
+    }
+
+    // UI Update (button state, mode visibility)
+    function updateUI() {
+      const hasToken = (state.token || '').trim().length > 0;
+      const hasOwner = (state.owner || '').trim().length > 0;
+      const hasRepo = (state.repo || '').trim().length > 0;
+      const hasBranch = (state.branch || '').trim().length > 0;
+      const hasFiles = state.files.length > 0;
+
+      const canPush = hasToken && hasOwner && hasRepo && hasBranch && hasFiles && !state.isPushing;
+      pushBtn.disabled = !canPush;
+
+      // Mode panes
+      paneZip.classList.toggle('active', state.mode === 'zip');
+      paneFolder.classList.toggle('active', state.mode === 'folder');
+      paneSingle.classList.toggle('active', state.mode === 'single');
+
+      // Strip folder row is relevant for zip and folder
+      stripFolderRow.style.display = state.mode === 'single' ? 'none' : 'flex';
+    }
+
+    // Mode Switcher handlers
+    segmentBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        segmentBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.mode = btn.dataset.mode;
+        updateUI();
+      });
+    });
+
+    // Token show/hide
+    toggleTokenBtn.addEventListener('click', () => {
+      if (tokenInput.type === 'password') {
+        tokenInput.type = 'text';
+        eyeIconOpen.style.display = 'none';
+        eyeIconClosed.style.display = 'block';
+      } else {
+        tokenInput.type = 'password';
+        eyeIconOpen.style.display = 'block';
+        eyeIconClosed.style.display = 'none';
+      }
+    });
+
+    // Token guide accordion
+    tokenGuideToggle.addEventListener('click', () => {
+      tokenGuideBox.classList.toggle('open');
+    });
+
+    // Clear saved token
+    clearTokenBtn.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY_TOKEN);
+      state.token = '';
+      tokenInput.value = '';
+      rememberTokenCheckbox.checked = false;
+      showToast('Saved token cleared', 'info');
+      updateUI();
+    });
+
+    // Token input change
+    tokenInput.addEventListener('input', (e) => {
+      state.token = e.target.value.trim();
+      if (state.rememberToken && state.token) {
+        localStorage.setItem(STORAGE_KEY_TOKEN, state.token);
+      } else if (!state.rememberToken) {
+        localStorage.removeItem(STORAGE_KEY_TOKEN);
+      }
+      updateUI();
+    });
+
+    rememberTokenCheckbox.addEventListener('change', (e) => {
+      state.rememberToken = e.target.checked;
+      if (state.rememberToken && state.token) {
+        localStorage.setItem(STORAGE_KEY_TOKEN, state.token);
+      } else {
+        localStorage.removeItem(STORAGE_KEY_TOKEN);
+      }
+    });
+
+    // Owner, Repo, Branch handlers
+    ownerInput.addEventListener('input', (e) => {
+      state.owner = e.target.value.trim();
+      localStorage.setItem(STORAGE_KEY_OWNER, state.owner);
+      updateUI();
+    });
+
+    repoInput.addEventListener('input', (e) => {
+      state.repo = e.target.value.trim();
+      localStorage.setItem(STORAGE_KEY_REPO, state.repo);
+      updateUI();
+    });
+
+    branchInput.addEventListener('input', (e) => {
+      state.branch = e.target.value.trim() || 'main';
+      localStorage.setItem(STORAGE_KEY_BRANCH, state.branch);
+      updateUI();
+    });
+
+    stripTopFolderCheckbox.addEventListener('change', (e) => {
+      state.stripTopFolder = e.target.checked;
+    });
+
+    mirrorRepoCheckbox.addEventListener('change', (e) => {
+      state.mirror = e.target.checked;
+      mirrorWarning.style.display = state.mirror ? 'flex' : 'none';
+    });
+
+    targetFolderInput.addEventListener('input', (e) => {
+      state.targetFolder = e.target.value.trim();
+    });
+
+    commitMessageInput.addEventListener('input', (e) => {
+      state.commitMessage = e.target.value;
+    });
+
+    clearFilesBtn.addEventListener('click', () => {
+      state.files = [];
+      state.skippedFiles = [];
+      state.largeFiles = [];
+      zipInput.value = '';
+      filesInput.value = '';
+      folderInput.value = '';
+      singleFileInput.value = '';
+      singleFilePathInput.value = '';
+      renderFilesSummary();
+      updateUI();
+    });
+
+    // Mode 1: ZIP extraction
+    zipDropzone.addEventListener('click', () => zipInput.click());
+
+    zipDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zipDropzone.classList.add('dragover');
+    });
+
+    zipDropzone.addEventListener('dragleave', () => {
+      zipDropzone.classList.remove('dragover');
+    });
+
+    zipDropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zipDropzone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleZipFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    zipInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleZipFile(e.target.files[0]);
+      }
+    });
+
+    async function handleZipFile(file) {
+      if (!file.name.toLowerCase().endsWith('.zip') && file.type !== 'application/zip') {
+        showToast('Please select a valid .zip file', 'warning');
+      }
+
+      showProgress(true, 'Extracting zip…', 'Reading zip archive entries…', 10);
+      try {
+        if (typeof JSZip === 'undefined') {
+          throw new Error('JSZip library failed to load.');
+        }
+
+        const zip = await JSZip.loadAsync(file);
+        const rawFiles = [];
+        const entries = [];
+
+        zip.forEach((relativePath, zipEntry) => {
+          if (!zipEntry.dir) {
+            entries.push({ path: relativePath, entry: zipEntry });
+          }
+        });
+
+        let extracted = 0;
+        const total = entries.length;
+
+        for (const item of entries) {
+          const uint8 = await item.entry.async('uint8array');
+          rawFiles.push({
+            path: item.path,
+            data: uint8,
+            size: uint8.byteLength
+          });
+          extracted++;
+          if (extracted % 10 === 0 || extracted === total) {
+            const pct = Math.round(10 + (extracted / total) * 80);
+            updateProgressBar(pct, `Extracted ${extracted} of ${total} files…`);
+          }
+        }
+
+        resolveFiles(rawFiles, true);
+        showToast(`Extracted ${state.files.length} files from ${file.name}`, 'success');
+      } catch (err) {
+        console.error(err);
+        showToast('Error unzipping file: ' + err.message, 'error');
+      } finally {
+        showProgress(false);
+      }
+    }
+
+    // Mode 2: Files / Folder
+    btnChooseFiles.addEventListener('click', () => filesInput.click());
+    btnChooseFolder.addEventListener('click', () => folderInput.click());
+
+    filesInput.addEventListener('change', async (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        await processStandardFileList(e.target.files, false);
+      }
+    });
+
+    folderInput.addEventListener('change', async (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        await processStandardFileList(e.target.files, true);
+      }
+    });
+
+    async function processStandardFileList(fileList, isFolder) {
+      showProgress(true, 'Reading files…', 'Loading files into browser memory…', 20);
+      try {
+        const rawFiles = [];
+        for (let i = 0; i < fileList.length; i++) {
+          const f = fileList[i];
+          const path = (isFolder && f.webkitRelativePath) ? f.webkitRelativePath : f.name;
+          const arrayBuf = await f.arrayBuffer();
+          rawFiles.push({
+            path: path,
+            data: arrayBuf,
+            size: f.size
+          });
+        }
+        resolveFiles(rawFiles, isFolder);
+        showToast(`Loaded ${state.files.length} file(s)`, 'success');
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to read files: ' + err.message, 'error');
+      } finally {
+        showProgress(false);
+      }
+    }
+
+    // Mode 3: Single File
+    btnChooseSingle.addEventListener('click', () => singleFileInput.click());
+
+    singleFileInput.addEventListener('change', async (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const f = e.target.files[0];
+        const arrayBuf = await f.arrayBuffer();
+        const initialPath = f.name;
+        singleFilePathInput.value = initialPath;
+
+        resolveFiles([{
+          path: initialPath,
+          data: arrayBuf,
+          size: f.size
+        }], false);
+      }
+    });
+
+    singleFilePathInput.addEventListener('input', (e) => {
+      const newPath = e.target.value.trim();
+      if (state.files.length === 1 && newPath) {
+        state.files[0].path = normalizePath(newPath);
+        renderFilesSummary();
+      }
+    });
+
+    // Progress Helper
+    function showProgress(show, title = '', details = '', percent = 0) {
+      if (show) {
+        progressSection.classList.add('active');
+        progressStepTitle.textContent = title;
+        progressStepDetails.textContent = details;
+        progressFill.style.width = percent + '%';
+        progressPercentText.textContent = percent + '%';
+      } else {
+        progressSection.classList.remove('active');
+      }
+    }
+
+    function updateProgressBar(percent, details) {
+      progressFill.style.width = percent + '%';
+      progressPercentText.textContent = Math.round(percent) + '%';
+      if (details) {
+        progressStepDetails.textContent = details;
+      }
+    }
+
+    // Tech details toggle
+    techDetailsToggle.addEventListener('click', () => {
+      techDetailsBox.classList.toggle('open');
+    });
+
+    btnTryAgain.addEventListener('click', () => {
+      errorCard.style.display = 'none';
+      pushBtn.click();
+    });
+
+    // Map errors to plain language
+    function mapErrorMessage(status, rawMessage, step) {
+      let reason = '';
+      if (status === 401) {
+        reason = 'Token is invalid or expired.';
+      } else if (status === 403) {
+        reason = "Token has no write permission to this repo, or rate limit reached. Give the token 'Contents: Read and write' for this repo.";
+      } else if (status === 404) {
+        reason = 'Repo or branch not found, or the token cannot see this repo. Check the owner, repo name and branch spelling (it is case sensitive).';
+      } else if (status === 409) {
+        reason = 'Branch conflict or empty repo. Try again.';
+      } else if (status === 422) {
+        reason = 'GitHub rejected the data (possible invalid path or file name).';
+      } else if (!navigator.onLine || String(rawMessage).toLowerCase().includes('failed to fetch') || String(rawMessage).toLowerCase().includes('network')) {
+        reason = 'No internet connection.';
+      } else {
+        reason = rawMessage || 'An unexpected error occurred.';
+      }
+      return { reason, step };
+    }
+
+    // Custom Error class
+    class GitPushError extends Error {
+      constructor(status, message, step, raw = null) {
+        super(message);
+        this.status = status;
+        this.step = step;
+        this.raw = raw;
+      }
+    }
+
+    // Main Push Execution
+    pushBtn.addEventListener('click', async () => {
+      if (state.isPushing) return;
+
+      // Reset result cards
+      successCard.style.display = 'none';
+      errorCard.style.display = 'none';
+      techDetailsBox.classList.remove('open');
+
+      state.isPushing = true;
+      pushBtn.disabled = true;
+      pushIcon.style.display = 'none';
+      pushSpinner.style.display = 'inline-block';
+      pushBtnText.textContent = 'Pushing…';
+
+      const token = state.token;
+      const owner = state.owner;
+      const repo = state.repo;
+      const branch = state.branch;
+      const isMirror = state.mirror;
+      const targetFolder = state.targetFolder ? normalizePath(state.targetFolder) : '';
+
+      try {
+        // Step 1: Validate token
+        showProgress(true, 'Checking token…', 'Validating your GitHub credentials…', 5);
+        const userRes = await fetch('https://api.github.com/user', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+        if (!userRes.ok) {
+          const errData = await userRes.json().catch(() => ({}));
+          throw new GitPushError(userRes.status, errData.message || 'Token check failed', 'Step 1: Validating token', errData);
+        }
+
+        // Prepare file paths (strip top folder if checked)
+        let preparedFiles = state.files.map(f => ({ ...f }));
+        if (state.stripTopFolder && state.mode !== 'single') {
+          const commonTop = detectCommonTopFolder(preparedFiles);
+          if (commonTop) {
+            preparedFiles = preparedFiles.map(f => ({
+              ...f,
+              path: f.path.substring(commonTop.length + 1)
+            }));
+          }
+        }
+
+        // Apply target folder if specified
+        if (targetFolder) {
+          preparedFiles = preparedFiles.map(f => ({
+            ...f,
+            path: `${targetFolder}/${f.path}`
+          }));
+        }
+
+        // Step 2 & 3: Check branch and base tree
+        updateProgressBar(12, 'Checking repository and branch…');
+        let baseTreeSha = null;
+        let parentCommitSha = null;
+
+        const refRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(branch)}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+
+        if (refRes.status === 409) {
+          // Empty repo (409 Git Repository is empty)
+          // Handle initial commit using contents API with first file
+          updateProgressBar(18, 'Initializing empty repository…');
+          const first = preparedFiles[0];
+          const firstB64 = arrayBufferToBase64(first.data);
+          const initRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(first.path)}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'Content-Type': 'application/json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            },
+            body: JSON.stringify({
+              message: state.commitMessage.trim() || 'Initial commit via Repo Sync',
+              content: firstB64,
+              branch: branch
+            })
+          });
+
+          if (!initRes.ok) {
+            const errData = await initRes.json().catch(() => ({}));
+            throw new GitPushError(initRes.status, errData.message || 'Failed to initialize empty repo', 'Step 3: Initializing empty repo', errData);
+          }
+
+          const initData = await initRes.json();
+          parentCommitSha = initData.commit.sha;
+          baseTreeSha = initData.commit.tree.sha;
+
+          if (preparedFiles.length === 1) {
+            // Done with single file!
+            finishSuccess(1, 0, parentCommitSha, owner, repo, branch);
+            return;
+          }
+        } else if (refRes.status === 404) {
+          // Branch does not exist or repo is empty
+          updateProgressBar(15, 'Checking default branch…');
+          const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+          if (!repoRes.ok) {
+            const errData = await repoRes.json().catch(() => ({}));
+            throw new GitPushError(repoRes.status, errData.message || 'Repository not found', 'Step 2: Checking repository', errData);
+          }
+          const repoData = await repoRes.json();
+          const defaultBranch = repoData.default_branch || 'main';
+
+          // Try getting default branch commit
+          const defaultRefRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(defaultBranch)}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+
+          if (defaultRefRes.status === 409 || defaultRefRes.status === 404) {
+            // Repo is completely empty! Initialize with first file
+            updateProgressBar(18, 'Initializing empty repository…');
+            const first = preparedFiles[0];
+            const firstB64 = arrayBufferToBase64(first.data);
+            const initRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(first.path)}`, {
+              method: 'PUT',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github+json',
+                'Content-Type': 'application/json',
+                'X-GitHub-Api-Version': '2022-11-28'
+              },
+              body: JSON.stringify({
+                message: state.commitMessage.trim() || 'Initial commit via Repo Sync',
+                content: firstB64,
+                branch: branch
+              })
+            });
+
+            if (!initRes.ok) {
+              const errData = await initRes.json().catch(() => ({}));
+              throw new GitPushError(initRes.status, errData.message || 'Failed to initialize empty repo', 'Step 3: Initializing empty repo', errData);
+            }
+
+            const initData = await initRes.json();
+            parentCommitSha = initData.commit.sha;
+            baseTreeSha = initData.commit.tree.sha;
+
+            if (preparedFiles.length === 1) {
+              finishSuccess(1, 0, parentCommitSha, owner, repo, branch);
+              return;
+            }
+          } else if (!defaultRefRes.ok) {
+            const errData = await defaultRefRes.json().catch(() => ({}));
+            throw new GitPushError(defaultRefRes.status, errData.message || 'Failed to query branch', 'Step 2: Checking default branch', errData);
+          } else {
+            // Default branch exists: create branch from default branch latest commit
+            const defaultRefData = await defaultRefRes.json();
+            const sourceCommitSha = defaultRefData.object.sha;
+
+            updateProgressBar(18, `Creating branch '${branch}'…`);
+            const createBranchRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github+json',
+                'Content-Type': 'application/json',
+                'X-GitHub-Api-Version': '2022-11-28'
+              },
+              body: JSON.stringify({
+                ref: `refs/heads/${branch}`,
+                sha: sourceCommitSha
+              })
+            });
+
+            if (!createBranchRes.ok) {
+              const errData = await createBranchRes.json().catch(() => ({}));
+              throw new GitPushError(createBranchRes.status, errData.message || 'Failed to create branch', 'Step 3: Creating branch', errData);
+            }
+
+            parentCommitSha = sourceCommitSha;
+            const commitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${parentCommitSha}`, {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            });
+            const commitData = await commitRes.json();
+            baseTreeSha = commitData.tree.sha;
+          }
+        } else if (!refRes.ok) {
+          const errData = await refRes.json().catch(() => ({}));
+          throw new GitPushError(refRes.status, errData.message || 'Failed to query branch ref', 'Step 2: Checking branch', errData);
+        } else {
+          // Normal branch found
+          const refData = await refRes.json();
+          parentCommitSha = refData.object.sha;
+
+          const commitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${parentCommitSha}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+          if (!commitRes.ok) {
+            const errData = await commitRes.json().catch(() => ({}));
+            throw new GitPushError(commitRes.status, errData.message || 'Failed to fetch commit', 'Step 2: Fetching commit', errData);
+          }
+          const commitData = await commitRes.json();
+          baseTreeSha = commitData.tree.sha;
+        }
+
+        // Step 4: Upload Blobs with concurrency limit 3 and retry 2
+        updateProgressBar(22, `Uploading 0 / ${preparedFiles.length} files…`);
+        const uploadedBlobs = [];
+        let completedBlobs = 0;
+        const totalBlobs = preparedFiles.length;
+
+        async function uploadSingleBlob(file) {
+          const b64 = arrayBufferToBase64(file.data);
+          let attempts = 0;
+          const maxAttempts = 3;
+          let lastErr = null;
+
+          while (attempts < maxAttempts) {
+            attempts++;
+            try {
+              const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Accept': 'application/vnd.github+json',
+                  'Content-Type': 'application/json',
+                  'X-GitHub-Api-Version': '2022-11-28'
+                },
+                body: JSON.stringify({
+                  content: b64,
+                  encoding: 'base64'
+                })
+              });
+
+              if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new GitPushError(res.status, errData.message || 'Blob upload rejected', 'Step 4: Uploading files', errData);
+              }
+
+              const data = await res.json();
+              completedBlobs++;
+              const pct = 22 + Math.round((completedBlobs / totalBlobs) * 55);
+              updateProgressBar(pct, `Uploading ${completedBlobs} / ${totalBlobs} files…`);
+              return { path: file.path, sha: data.sha };
+            } catch (err) {
+              lastErr = err;
+              if (attempts < maxAttempts) {
+                await new Promise(r => setTimeout(r, 600 * attempts));
+              }
+            }
+          }
+          throw lastErr || new Error(`Failed to upload ${file.path}`);
+        }
+
+        // Worker queue with 3 concurrency
+        const queue = [...preparedFiles];
+        const workers = Array(Math.min(3, preparedFiles.length)).fill(null).map(async () => {
+          while (queue.length > 0) {
+            const item = queue.shift();
+            const res = await uploadSingleBlob(item);
+            uploadedBlobs.push(res);
+          }
+        });
+        await Promise.all(workers);
+
+        // Step 5: Build Git Tree
+        updateProgressBar(80, 'Building Git tree…');
+        const treeEntries = uploadedBlobs.map(b => ({
+          path: b.path,
+          mode: '100644',
+          type: 'blob',
+          sha: b.sha
+        }));
+
+        let deletedCount = 0;
+        if (isMirror && baseTreeSha) {
+          updateProgressBar(83, 'Analyzing repo tree for mirror mode…');
+          const recRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${baseTreeSha}?recursive=1`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+
+          if (recRes.ok) {
+            const recData = await recRes.json();
+            if (recData.truncated) {
+              showToast('⚠️ Recursive tree was truncated by GitHub. Deletion skipped to prevent accidental loss.', 'warning');
+            } else if (Array.isArray(recData.tree)) {
+              const uploadedSet = new Set(uploadedBlobs.map(b => b.path));
+              for (const item of recData.tree) {
+                if (item.type === 'blob') {
+                  if (targetFolder) {
+                    const prefix = targetFolder.endsWith('/') ? targetFolder : targetFolder + '/';
+                    if (!item.path.startsWith(prefix)) continue;
+                  }
+                  if (!uploadedSet.has(item.path)) {
+                    treeEntries.push({
+                      path: item.path,
+                      mode: '100644',
+                      type: 'blob',
+                      sha: null // Delete in GitHub git data API
+                    });
+                    deletedCount++;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          },
+          body: JSON.stringify({
+            base_tree: baseTreeSha,
+            tree: treeEntries
+          })
+        });
+
+        if (!treeRes.ok) {
+          const errData = await treeRes.json().catch(() => ({}));
+          throw new GitPushError(treeRes.status, errData.message || 'Failed to create git tree', 'Step 5: Creating git tree', errData);
+        }
+        const treeData = await treeRes.json();
+        const newTreeSha = treeData.sha;
+
+        // Step 6: Create Commit
+        updateProgressBar(90, 'Creating commit…');
+        const commitMsg = state.commitMessage.trim() || 'Update via Repo Sync';
+        const commitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          },
+          body: JSON.stringify({
+            message: commitMsg,
+            tree: newTreeSha,
+            parents: parentCommitSha ? [parentCommitSha] : []
+          })
+        });
+
+        if (!commitRes.ok) {
+          const errData = await commitRes.json().catch(() => ({}));
+          throw new GitPushError(commitRes.status, errData.message || 'Failed to create commit', 'Step 6: Creating commit', errData);
+        }
+        const commitData = await commitRes.json();
+        const newCommitSha = commitData.sha;
+
+        // Step 7: Update Branch Ref
+        updateProgressBar(96, `Updating branch '${branch}'…`);
+        const patchRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${encodeURIComponent(branch)}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          },
+          body: JSON.stringify({
+            sha: newCommitSha,
+            force: false
+          })
+        });
+
+        if (!patchRes.ok) {
+          const errData = await patchRes.json().catch(() => ({}));
+          throw new GitPushError(patchRes.status, errData.message || 'Failed to update branch ref', 'Step 7: Updating branch', errData);
+        }
+
+        updateProgressBar(100, 'Complete!');
+        finishSuccess(uploadedBlobs.length, deletedCount, newCommitSha, owner, repo, branch);
+      } catch (err) {
+        console.error('Push error:', err);
+        finishError(err);
+      } finally {
+        state.isPushing = false;
+        pushBtn.disabled = false;
+        pushIcon.style.display = 'inline-block';
+        pushSpinner.style.display = 'none';
+        pushBtnText.textContent = 'Push to GitHub';
+        showProgress(false);
+      }
+    });
+
+    // Handle Success UI
+    function finishSuccess(pushedCount, deletedCount, commitSha, owner, repo, branch) {
+      successCard.style.display = 'flex';
+      errorCard.style.display = 'none';
+
+      statPushedCount.textContent = pushedCount;
+      if (state.mirror) {
+        statDeletedWrap.style.display = 'block';
+        statDeletedCount.textContent = deletedCount;
+      } else {
+        statDeletedWrap.style.display = 'none';
+      }
+
+      const shortSha = commitSha ? commitSha.substring(0, 7) : 'latest';
+      statCommitSha.textContent = shortSha;
+
+      btnViewCommit.href = `https://github.com/${owner}/${repo}/commit/${commitSha}`;
+      btnOpenRepo.href = `https://github.com/${owner}/${repo}/tree/${encodeURIComponent(branch)}`;
+
+      showToast('✅ Pushed successfully!', 'success');
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Handle Error UI
+    function finishError(err) {
+      errorCard.style.display = 'flex';
+      successCard.style.display = 'none';
+
+      const status = err.status || 0;
+      const step = err.step || 'Execution';
+      const rawMsg = err.message || 'Unknown error';
+
+      const mapped = mapErrorMessage(status, rawMsg, step);
+      errorStepText.textContent = `Failed at: ${mapped.step}`;
+      errorReasonText.textContent = mapped.reason;
+
+      // Mask token in technical details
+      const rawJson = err.raw ? JSON.stringify(err.raw, null, 2) : String(err.stack || err.message);
+      techDetailsBox.textContent = maskToken(rawJson, state.token);
+
+      showToast('❌ Push failed: ' + mapped.reason, 'error');
+      errorCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Register Service Worker for PWA compliance
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.warn('SW registration skipped:', err);
+        });
+      });
+    }
+
+    // Startup
+    document.addEventListener('DOMContentLoaded', initStorage);
+  </script>
+</body>
+</html>

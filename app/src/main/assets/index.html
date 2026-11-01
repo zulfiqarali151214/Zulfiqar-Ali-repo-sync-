@@ -16,6 +16,8 @@
   </script>
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="description" content="Direct client-side GitHub repository synchronization app for mobile devices.">
   <style>
     :root {
       --primary: #1D4ED8;
@@ -2272,6 +2274,15 @@
 
       showToast('❌ Push failed: ' + mapped.reason, 'error');
       errorCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Register Service Worker for PWA compliance
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.warn('SW registration skipped:', err);
+        });
+      });
     }
 
     // Startup
