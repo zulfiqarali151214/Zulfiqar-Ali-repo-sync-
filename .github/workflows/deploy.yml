@@ -1,0 +1,66 @@
+name: Deploy Zulfiqar Repo Sync to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare Site Artifacts
+        run: |
+          mkdir -p _site
+          # Copy main web application files
+          if [ -d "app/src/main/assets" ]; then
+            cp -r app/src/main/assets/* _site/
+          fi
+          # Ensure root web assets are included
+          if [ -f "index.html" ]; then
+            cp index.html _site/
+          fi
+          if [ -f "jszip.min.js" ]; then
+            cp jszip.min.js _site/
+          fi
+          if [ -f "icon.png" ]; then
+            cp icon.png _site/
+          fi
+          if [ -f "favicon.png" ]; then
+            cp favicon.png _site/
+          fi
+          # Guarantee 404.html for SPA route fallback
+          if [ -f "404.html" ]; then
+            cp 404.html _site/
+          else
+            cp _site/index.html _site/404.html
+          fi
+
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
